@@ -4,9 +4,10 @@ import { ExpensesForm } from "./components/ExpensesForm";
 import { ExpenseTable } from "./components/ExpenseTable";
 import { ContextMenu } from "./components/ContextMenu";
 import { ExpenseData } from "./helpers/ExpenseData";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 function App() {
-  const [expenses, setExpenses] = useState(ExpenseData);
+  const [expenses, setExpenses] = useLocalStorage("expenses", ExpenseData);
   const [formData, setFormData] = useState({
     title: "",
     category: "",
