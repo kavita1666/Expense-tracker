@@ -31,7 +31,6 @@ export const ExpensesForm = ({ setExpenses }) => {
 
     // check validation
     const err = checkValidation();
-    console.log("----error", err);
     if (Object.keys(err).length > 0) return;
 
     setExpenses((prevExpenses) => [...prevExpenses, { ...formData, id: crypto.randomUUID() }]);
