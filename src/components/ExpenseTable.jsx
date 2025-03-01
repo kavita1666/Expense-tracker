@@ -4,14 +4,14 @@ import "../App.css";
 import { FilterTableCategoryOptions } from "../helpers/CategoryFilterOptions";
 import { ContextMenu } from "./ContextMenu";
 
-export const ExpenseTable = ({ expenses, setExpenses }) => {
+export const ExpenseTable = ({ expenses, setExpenses, setFormData, editingRowId, setEditingRowId }) => {
   const [filteredData, setFilteredData] = useState(expenses);
   const [filterCategory, setFilterCategory] = useState("all");
   const [contextMenuPosition, setContextMenuPosition] = useState({});
-  const [rowId, setRowId] = useState("");
+  
 
   const getTotalAmount = () => {
-    return filteredData.reduce((acc, curr) => acc + +curr.amount, 0);
+    return filteredData.reduce((acc, curr) => acc + parseInt(curr.amount), 0);
   };
 
   const getFilteredCategory = () => {
@@ -42,23 +42,27 @@ export const ExpenseTable = ({ expenses, setExpenses }) => {
   const handleContextMenu = (e, id) => {
     e.preventDefault();
     setContextMenuPosition({ left: e.clientX, top: e.clientY });
-    setRowId(id);
+    setEditingRowId(id);
   };
 
   const handleDeleteExpense = () => {
-    const newData = filteredData.filter((expense) => expense.id !== rowId);
+    const newData = filteredData.filter((expense) => expense.id !== editingRowId);
     setFilteredData(newData);
     setExpenses(newData);
   };
 
-  // const handleEditExpense = () => {
-
-    
-  // };
+  const handleEditExpense = () => {
+    const rowData = filteredData.find((expense) => expense.id === editingRowId);
+    setFormData({
+      title: rowData.title,
+      category: rowData.category,
+      amount: rowData.amount,
+    });
+  };
 
   return (
     <>
-      <ContextMenu contextMenuPosition={contextMenuPosition} setContextMenuPosition={setContextMenuPosition} handleDeleteExpense={handleDeleteExpense} />
+      <ContextMenu contextMenuPosition={contextMenuPosition} setContextMenuPosition={setContextMenuPosition} handleDeleteExpense={handleDeleteExpense} handleEditExpense={handleEditExpense} />
       <table className="expense-table" onClick={() => setContextMenuPosition({})}>
         <thead>
           <tr>

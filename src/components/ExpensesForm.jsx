@@ -4,25 +4,25 @@ import "../App.css";
 import { FormCategoryOptions } from "../helpers/CategoryFilterOptions";
 import { validationConfig } from "../helpers/validationConfig";
 
-export const ExpensesForm = ({ setExpenses }) => {
-  const [formData, setFormData] = useState({
-    title: "",
-    category: "",
-    amount: "",
-  });
-
+export const ExpensesForm = ({ setExpenses, formData, setFormData, setEditingRowId, editingRowId }) => {
   const [errors, setErrors] = useState({});
 
   const checkValidation = () => {
     let tempErrors = {};
     Object.keys(validationConfig).forEach((key) => {
       validationConfig[key].forEach((rule) => {
-        if ((rule.required && formData[key].trim().length === 0) || formData[key].length < rule.minLength || formData[key].length > rule.maxLength || formData[key] < rule.min || formData[key] > rule.max) {
+        if (
+          (rule.required && formData[key].length === 0) ||
+          formData[key].length < rule.minLength ||
+          formData[key].length > rule.maxLength ||
+          formData[key] < rule.min ||
+          formData[key] > rule.max
+        ) {
           tempErrors[key] = rule.message;
         }
       });
     });
-    setErrors(tempErrors)
+    setErrors(tempErrors);
     return tempErrors;
   };
 
@@ -32,6 +32,12 @@ export const ExpensesForm = ({ setExpenses }) => {
     // check validation
     const err = checkValidation();
     if (Object.keys(err).length > 0) return;
+
+    if (editingRowId) {
+      setExpenses((prevExpenses) => prevExpenses.map((expense) => (expense.id === editingRowId ? { ...formData, id: editingRowId } : expense)));
+      setEditingRowId("");
+      return;
+    }
 
     setExpenses((prevExpenses) => [...prevExpenses, { ...formData, id: crypto.randomUUID() }]);
 
@@ -74,7 +80,7 @@ export const ExpensesForm = ({ setExpenses }) => {
         <input type="number" id="amount" name="amount" placeholder="Enter amount" value={formData.amount} onChange={(e) => handleOnChange(e)} />
         <p className="error-message">{errors.amount}</p>
       </div>
-      <button className="add-btn">Add</button>
+      <button className="add-btn">{editingRowId ? "Update" : "Add"}</button>
     </form>
   );
 };
