@@ -79,11 +79,14 @@ main {
 .input-container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 12px;
+    margin-bottom: 40px;
+    position: relative;
 }
 
 .input-container label {
-    font-size: 14px;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
 }
 
 .input-container input {
@@ -127,4 +130,11 @@ main {
     .expense-tracker {
         flex-direction: column;
     }
+}
+
+.error-message{
+    color: red;
+    position: absolute;
+    top: 90%;
+    font-size: 13px;
 }
