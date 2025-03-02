@@ -2,6 +2,8 @@
 
 A simple Expense Tracker application built with **React** and **Vite**. Users can add expenses, and a tabular view helps track and manage expenses efficiently.
 
+link to site: https://expense-tracker-k.netlify.app/
+
 ## Features
 - Add Expenses: Users can input expenses using a form with basic validation.
 - Table View: Displays all expenses in a structured tabular format.
